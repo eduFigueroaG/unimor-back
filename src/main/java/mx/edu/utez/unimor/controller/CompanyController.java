@@ -36,7 +36,12 @@ public class CompanyController {
 
     @GetMapping("all")
     public Object findAll(@RequestParam Optional<Integer> page) {
-        return companyService.findAll(PageRequest.of(page.orElse(0), 8));
+        return companyService.findAllByStatus(PageRequest.of(page.orElse(0), 8));
+    }
+
+    @GetMapping("all/admin")
+    public Object findAllAdmin(@RequestParam Optional<Integer> page) {
+        return companyService.findAllNoStatus(PageRequest.of(page.orElse(0), 8));
     }
 
     @GetMapping("all/top")

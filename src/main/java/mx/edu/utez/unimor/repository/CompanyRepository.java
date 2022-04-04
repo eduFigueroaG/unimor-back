@@ -15,6 +15,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query(value = "SELECT * FROM company WHERE status =true", nativeQuery = true)
     Page<Company> findAllPaginated(Pageable pageable);
 
+    @Query(value = "SELECT * FROM company", nativeQuery = true)
+    Page<Company> findAllPaginatedNoStatus(Pageable pageable);
+
     List<Company> findAllByStatus(boolean status);
 
 

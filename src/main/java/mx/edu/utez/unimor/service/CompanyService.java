@@ -38,9 +38,18 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<?> findAll(Pageable pageable) {
+    public ResponseEntity<?> findAllByStatus(Pageable pageable) {
         try{
             return new ResponseEntity<>(response(1, companyRepository.findAllPaginated(pageable)), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(response(2, "Error al consultar"), HttpStatus.OK);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> findAllNoStatus(Pageable pageable) {
+        try{
+            return new ResponseEntity<>(response(1, companyRepository.findAllPaginatedNoStatus(pageable)), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(response(2, "Error al consultar"), HttpStatus.OK);
         }
