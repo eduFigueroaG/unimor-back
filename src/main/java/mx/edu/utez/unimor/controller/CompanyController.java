@@ -5,15 +5,23 @@ import mx.edu.utez.unimor.entity.Company;
 import mx.edu.utez.unimor.entity.Photo;
 import mx.edu.utez.unimor.response.ApiResponse;
 import mx.edu.utez.unimor.service.CompanyService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -120,5 +128,17 @@ public class CompanyController {
     private Map<String, Object> response(int option, Object data) {
         ApiResponse apiResponse = new ApiResponse();
         return apiResponse.returnResponse(option, data);
+    }
+
+    @GetMapping(value = "image/{img:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<Resource> image(@PathVariable String img) throws IOException {
+        final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(
+                "C:\\unimor\\"+ img
+        )));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentLength(inputStream.contentLength())
+                .body(inputStream);
+
     }
 }
